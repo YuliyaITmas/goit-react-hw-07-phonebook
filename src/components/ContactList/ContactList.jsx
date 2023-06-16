@@ -24,7 +24,7 @@ export const ContactList = () => {
 
   if (filter && filter.trim() !== '') {
     const normalizedFilter = filter.toLowerCase().trim();
-    console.log(normalizedFilter);
+  
     filteredContacts = filteredContacts.filter(
       contact =>
         contact.name.toLowerCase().includes(normalizedFilter) ||
