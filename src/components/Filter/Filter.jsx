@@ -1,12 +1,12 @@
 import { useDispatch } from 'react-redux';
 import { FilterContainer, FilterLabel, FilterInput } from './Filter.styled';
-import {  setFilter } from 'redux/filterSlice';
+import { setFilter } from 'redux/filterSlice';
 
 export const Filter = () => {
   const dispatch = useDispatch();
 
   const handleChange = event => {
-dispatch(setFilter(event.target.value));
+    dispatch(setFilter(event.target.value));
   };
 
   return (

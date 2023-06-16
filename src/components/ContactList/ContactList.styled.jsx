@@ -29,6 +29,7 @@ transition: all 0.2s ease;
 `;
 
 export const Name = styled.span`
+max-width:170px;
 font-size: 30px;
 font-weight: bold;
 // margin-right: 15px;
@@ -39,14 +40,15 @@ font-size: 30px;
 `;
 
 export const Delete = styled.button`
-padding: 5px;
-border: none;
-background-color: transparent;
-color: #999;
-cursor: pointer;
-transition: color 0.2s ease;
+  margin-left: 30px;
+  padding: 5px;
+  border: none;
+  background-color: transparent;
+  color: #999;
+  cursor: pointer;
+  transition: color 0.2s ease;
 
-&:hover {
-  color: #000;
-}
-`
+  &:hover {
+    color: #000;
+  }
+`;

@@ -2,8 +2,9 @@ import { Formik } from 'formik';
 import { FormContext } from 'components/ContactForm/FormContext';
 import * as yup from 'yup';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
-import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/contactsSlice';
+
+import { useAddContactMutation, useGetContactsQuery } from 'redux/contactsApi';
+import Loader from 'components/Loader/Loader';
 
 const options = {
   width: '320px',
@@ -18,26 +19,28 @@ const options = {
 };
 
 export const ContactForm = () => {
-  const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts);
+  const { data: contacts } = useGetContactsQuery();
+
+  const [addContact, { isLoading: isAddingContact }] = useAddContactMutation();
 
   const handleSubmit = (values, { resetForm }) => {
     const isContactExists = contacts.some(
       contact =>
-        contact.name.toLowerCase().trim() ===
-          values.name.toLowerCase().trim() ||
-        contact.number.trim() === values.number.trim()
+        (contact.name &&
+          contact.name.toLowerCase().trim() ===
+            values.name.toLowerCase().trim()) ||
+        (contact.number && contact.number.trim() === values.number.trim())
     );
-
     if (isContactExists) {
       Notify.failure(`${values.name} is already in contacts`, options);
       resetForm();
       return;
     }
 
-    dispatch(addContact({ name: values.name, number: values.number }));
+    addContact({ name: values.name, phone: values.number });
     resetForm();
   };
+
   const validationSchema = yup.object().shape({
     name: yup
       .string()
@@ -68,7 +71,11 @@ export const ContactForm = () => {
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
-      <FormContext />
+      {() => (
+        <>
+          {isAddingContact && <Loader />} <FormContext />
+        </>
+      )}
     </Formik>
   );
 };
